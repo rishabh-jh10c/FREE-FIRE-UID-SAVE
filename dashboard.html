@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="dashboard-header fade-in">
+    <h2 class="neon-text">My Free Fire Vault</h2>
+    <a href="{{ url_for('add_account') }}" class="btn-primary">+ Add New ID</a>
+</div>
+
+{% if accounts %}
+<div class="accounts-grid">
+    {% for acc in accounts %}
+    <div class="account-card glass-panel fade-in">
+        <div class="card-header">
+            <h3>{{ acc.player_name or 'Unknown Player' }}</h3>
+            {% if acc.status == 'Active' %}
+                <span class="badge badge-active">Active</span>
+            {% elif acc.status == 'Banned' %}
+                <span class="badge badge-banned">Banned</span>
+            {% else %}
+                <span class="badge badge-blacklisted">Blacklisted</span>
+            {% endif %}
+        </div>
+        <div class="card-body">
+            {% if acc.level %}
+            <p><strong>Game Level:</strong> {{ acc.level }}</p>
+            {% endif %}
+            <p><strong>Game UID:</strong> {{ acc.uid }}</p>
+            {% if acc.game_email %}
+            <p><strong>Game Email:</strong> <span class="blur-text pw-reveal">{{ acc.game_email }}</span></p>
+            {% endif %}
+            <div class="password-box">
+                <strong>Password:</strong>
+                <span class="blur-text pw-reveal">{{ acc.decrypted_password }}</span>
+            </div>
+            
+            {% if acc.status in ['Banned', 'Blacklisted'] and acc.unban_time %}
+                <div class="timer-box">
+                    <strong>Unban In:</strong>
+                    <div class="countdown" data-unban="{{ acc.unban_time.strftime('%Y-%m-%dT%H:%M:%S') }}">Calculating...</div>
+                </div>
+            {% endif %}
+            
+            <p class="last-updated"><small>Last Update: {{ acc.last_updated.strftime('%d %b %Y, %H:%M') }}</small></p>
+        </div>
+        
+        <div class="card-actions">
+            <a href="{{ url_for('edit_account', account_id=acc.id) }}" class="btn-text" style="color:var(--neon-blue);">Edit</a>
+            <form id="deleteForm-{{ acc.id }}" action="{{ url_for('delete_account', account_id=acc.id) }}" method="POST" style="margin: 0; padding: 0;">
+                <button type="button" class="btn-text" style="color:var(--neon-pink); padding: 5px 10px; z-index: 10; position: relative;" onclick="openDeleteModal('{{ acc.id }}')">Delete</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state glass-panel fade-in">
+    <h3>Your Vault is Empty</h3>
+    <p>You haven't added any Game IDs yet. All data you add is encrypted and strictly private.</p>
+    <a href="{{ url_for('add_account') }}" class="btn-glow mt-2">Add Your First ID</a>
+</div>
+{% endif %}
+<!-- Custom Delete Modal -->
+<div id="deleteModal" class="modal-overlay">
+    <div class="modal-content">
+        <h3>Delete Account?</h3>
+        <p>Are you sure you want to delete this account? This action cannot be undone.</p>
+        <div class="modal-actions">
+            <button type="button" id="cancelDeleteBtn" class="btn-cancel">Cancel</button>
+            <button type="button" id="confirmDeleteBtn" class="btn-danger">Yes, Delete</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

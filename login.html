@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="auth-wrapper fade-in">
+    <div class="auth-card glass-panel">
+        <h2 class="neon-text">Access Vault</h2>
+        <p class="subtitle text-center">Login to your private data.</p>
+        <form action="{{ url_for('login') }}" method="POST" id="loginForm">
+            <div class="form-group">
+                <label>Email ID</label>
+                <input type="email" name="email" id="loginEmail" class="glass-input" required placeholder="example@email.com">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <div style="position: relative;">
+                    <input type="password" name="password" id="loginPassword" class="glass-input" required placeholder="Enter Password" style="padding-right: 60px;">
+                    <span id="togglePassword" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--neon-blue); font-size: 0.9rem; font-weight: 600; user-select: none; transition: color 0.3s;">Show</span>
+                </div>
+            </div>
+            <div class="form-group" style="display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem;">
+                <input type="checkbox" id="rememberMe" style="width: auto; margin: 0; cursor: pointer;">
+                <label for="rememberMe" style="margin: 0; cursor: pointer;">Remember Me</label>
+            </div>
+            <button type="submit" class="btn-glow w-100">Login to Vault</button>
+        </form>
+        <p class="switch-auth">New user? <a href="{{ url_for('register') }}">Create Vault Here</a></p>
+    </div>
+</div>
+{% endblock %}

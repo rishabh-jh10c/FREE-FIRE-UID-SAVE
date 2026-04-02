@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="hero-section text-center fade-in">
+    <h1 class="neon-text">Welcome to FF Secure Bot</h1>
+    <p class="subtitle">Securely store, manage, and encrypt your Free Fire Game Accounts.</p>
+    
+    <div class="features-grid">
+        <div class="feature-card glass-panel">
+            <h3>🔒 Top Tier Security</h3>
+            <p>Your Game IDs and Passwords are encrypted utilizing Fernet cryptography.</p>
+        </div>
+        <div class="feature-card glass-panel">
+            <h3>🛡️ Private Vault</h3>
+            <p>100% Data isolation. Only you can view the accounts you add.</p>
+        </div>
+        <div class="feature-card glass-panel">
+            <h3>⏱️ Live Ban Timers</h3>
+            <p>Track Blacklisted and Banned accounts seamlessly with live countdowns.</p>
+        </div>
+    </div>
+    
+    <div class="cta-buttons">
+        <a href="{{ url_for('register') }}" class="btn-glow">Get Started Free</a>
+    </div>
+</div>
+{% endblock %}

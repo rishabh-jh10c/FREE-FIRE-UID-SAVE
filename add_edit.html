@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="auth-wrapper fade-in">
+    <div class="auth-card glass-panel form-card">
+        <h2 class="neon-text">{{ action }} Game Account</h2>
+        <form action="" method="POST">
+            <div class="form-group">
+                <label>Game Level (Optional)</label>
+                <input type="number" name="level" class="glass-input" placeholder="e.g. 72" value="{{ account.level if account and account.level else '' }}">
+            </div>
+            <div class="form-group">
+                <label>Game UID (Max 12 digits)</label>
+                <input type="text" name="uid" class="glass-input" required maxlength="12" pattern="\d+" title="Only numbers are allowed" placeholder="1234567890" value="{{ account.uid if account else '' }}">
+            </div>
+            <div class="form-group">
+                <label>Game Email / Phone (Required for Login)</label>
+                <input type="text" name="game_email" class="glass-input" placeholder="example@gmail.com" value="{{ account.game_email if account else '' }}">
+            </div>
+            <div class="form-group">
+                <label>Game Password (Encrypted & Private)</label>
+                <!-- If editing, pre-fill with decrypted password -->
+                <input type="text" name="gpassword" class="glass-input" required placeholder="Enter FF Password" value="{{ account.decrypted_password if account else '' }}">
+            </div>
+            <div class="form-group">
+                <label>Player Name (Optional)</label>
+                <input type="text" name="player_name" class="glass-input" placeholder="e.g. Ruok FF" value="{{ account.player_name if account else '' }}">
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <select name="status" id="statusSelect" class="glass-input">
+                    <option value="Active" {% if account and account.status == 'Active' %}selected{% endif %}>Active</option>
+                    <option value="Banned" {% if account and account.status == 'Banned' %}selected{% endif %}>Banned</option>
+                    <option value="Blacklisted" {% if account and account.status == 'Blacklisted' %}selected{% endif %}>Blacklisted</option>
+                </select>
+            </div>
+            <div class="form-group" id="unbanTimeGrp" style="display: none;">
+                <label>Ban Date (When did the account get banned?)</label>
+                <input type="datetime-local" name="ban_date" class="glass-input" value="{{ account.ban_date.strftime('%Y-%m-%dT%H:%M') if account and account.ban_date else '' }}">
+            </div>
+            <button type="submit" class="btn-glow w-100 mt-2">Save Account SECURELY</button>
+        </form>
+        <div class="mt-2 text-center">
+            <a href="{{ url_for('dashboard') }}" class="btn-text">Cancel & Return</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
